@@ -12,7 +12,7 @@ const DiscordLogo: React.FC = () => (
 
 const DISCORD_CLIENT_ID = "1436708219249754114";
 const REDIRECT_URI = "https://test-panel-seven.vercel.app/api/callback";
-const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1436708219249754114&response_type=code&redirect_uri=https%3A%2F%2Ftest-panel-seven.vercel.app&scope=guilds+email`;
+const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1436708219249754114&response_type=code&redirect_uri=https%3A%2F%2Ftest-panel-seven.vercel.app%2Fapi%2Fcallback.ts&scope=guilds+email`;
 
 type PageStep = "login" | "loading" | "connected";
 
