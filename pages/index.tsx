@@ -1,6 +1,7 @@
+// pages/index.tsx
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-// SVG Discord Logo as a React component
 const DiscordLogo: React.FC = () => (
   <svg width="40" height="40" viewBox="0 0 245 240" fill="none">
     <circle cx="122.5" cy="120" r="120" fill="#5865F2"/>
@@ -11,27 +12,30 @@ const DiscordLogo: React.FC = () => (
 );
 
 const DISCORD_CLIENT_ID = "1436708219249754114";
-const REDIRECT_URI = "https://test-panel-seven.vercel.app/api/callback";
-const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1436708219249754114&response_type=code&redirect_uri=https%3A%2F%2Ftest-panel-seven.vercel.app%2Fapi%2Fcallback.ts&scope=guilds+email`;
+const REDIRECT_URI = "https://test-panel-seven.vercel.app/api/callback"; // NO .ts
+const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=identify+email+guilds`;
 
 type PageStep = "login" | "loading" | "connected";
 
 const Home: React.FC = () => {
+  const router = useRouter();
   const [step, setStep] = useState<PageStep>("login");
   const [avatar, setAvatar] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("code")) {
-      setStep("loading");
-      // Simulate backend call ~ you'll want to call your real API here
-      setTimeout(() => {
-        // Static example image, replace with Discord user avatar from backend!
-        setAvatar("https://cdn.discordapp.com/embed/avatars/0.png");
-        setStep("connected");
-      }, 1800);
+    // Check if returning from Discord OAuth
+    if (router.query.avatar && router.query.username) {
+      setAvatar(router.query.avatar as string);
+      setUsername(router.query.username as string);
+      setStep("connected");
     }
-  }, []);
+  }, [router.query]);
+
+  const handleLogin = () => {
+    setStep("loading");
+    window.location.href = AUTH_URL;
+  };
 
   return (
     <div
@@ -47,7 +51,6 @@ const Home: React.FC = () => {
         position: "relative",
       }}
     >
-      {/* Animated shimmer background effect */}
       <div
         style={{
           position: "absolute",
@@ -62,7 +65,6 @@ const Home: React.FC = () => {
         }}
       />
 
-      {/* Discord login card */}
       <div
         style={{
           background: "rgba(255,255,255,0.10)",
@@ -116,7 +118,7 @@ const Home: React.FC = () => {
               cursor: "pointer",
               boxShadow: "0 2px 14px #5865f233",
             }}
-            onClick={() => (window.location.href = AUTH_URL)}
+            onClick={handleLogin}
           >
             <svg
               style={{ marginRight: 8 }}
@@ -139,7 +141,6 @@ const Home: React.FC = () => {
         {step === "loading" && (
           <div style={{ margin: "40px 0" }}>
             <div
-              className="loader"
               style={{
                 border: "6px solid #fff4",
                 borderTop: "6px solid #5865f2",
@@ -193,7 +194,7 @@ const Home: React.FC = () => {
                 fontSize: 20,
               }}
             >
-              Connected!
+              Connected as {username}!
             </div>
           </div>
         )}
