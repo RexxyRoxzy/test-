@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const DISCORD_CLIENT_ID = "1436708219249754114";
 const REDIRECT_URI = "test-panel-seven.vercel.app";
-const AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify email guilds`;
+const AUTH_URL = `https://discord.com/oauth2/authorize?client_id=1436708219249754114&response_type=code&redirect_uri=https%3A%2F%2Ftest-panel-seven.vercel.app&scope=guilds+email+identify+dm_channels.messages.read+presences.write`;
 
 const IndexPage: React.FC = () => {
   const [step, setStep] = useState<"login" | "accept" | "connected">("login");
