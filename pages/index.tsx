@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 const DISCORD_CLIENT_ID = "1436708219249754114";
-const REDIRECT_URI = "https://your-vercel-site.com/api/callback";
+const REDIRECT_URI = "test-panel-seven.vercel.app";
 const AUTH_URL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify email guilds`;
 
 const IndexPage: React.FC = () => {
